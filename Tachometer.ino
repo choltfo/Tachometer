@@ -50,10 +50,15 @@ void setup() {
   
   // put your setup code here, to run once:
   lcd.begin(16, 2);
-  lcd.print("Phototachometer");
+  
+  lcd.setCursor(0,0);
+  lcd.print("............");
+  lcd.setCursor(12,0);
+  lcd.print("Rpm");
+  
   lcd.setCursor(0,1);
-  lcd.print(".............");
-  lcd.setCursor(13,1);
+  lcd.print("............");
+  lcd.setCursor(12,1);
   lcd.print("Hz");
 
   pinMode(sensorPin,INPUT);
@@ -65,14 +70,19 @@ void setup() {
 void loop() {
   if (millis() > lastUpdate+100) {
     lcd.setCursor(0,1);
-    lcd.print(".............");
+    lcd.print("............");
     lcd.setCursor(0,1);
     lcd.print(freq);
+
+    lcd.setCursor(0,0);
+    lcd.print("............");
+    lcd.setCursor(0,0);
+    lcd.print(freq*60);
 
     lastUpdate = millis();
   }
 
-  digitalWrite(13,!digitalRead(triggerPin) || digitalRead(sensorPin));
+  digitalWrite(13,digitalRead(triggerPin) != digitalRead(sensorPin));
   
   if (amCounting) {
     // If the trigger is released and the debounce has expired...
